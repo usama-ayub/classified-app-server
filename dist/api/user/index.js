@@ -5,5 +5,6 @@ var userController_1 = require("./userController");
 var router = express.Router();
 router.get('/user', userController_1.getAllUser);
 router.get('/user/:user_id', userController_1.getUserById);
-router.get('/user/changePassword', userController_1.changePassword);
+router.put('/user/changePassword', userController_1.changePassword);
+router.post('/user/resetPassword', userController_1.resetPassword);
 exports.default = router;

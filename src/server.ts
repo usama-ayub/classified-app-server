@@ -7,6 +7,8 @@ import * as Busboy from 'busboy';
 import * as randomstring from 'randomstring';
 import * as mime from 'mime-types';
 import * as cors from 'cors';
+import * as shortid from 'shortid';
+import * as nodemailer from 'nodemailer';
 
 
 //config
@@ -38,11 +40,6 @@ const port = config.port;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-
-app.get('/', function (req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
-});
-
 
 
 app.use('/api', authRoutes, userRoutes, postRoutes);

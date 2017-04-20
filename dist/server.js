@@ -27,9 +27,6 @@ var port = config_1.default.port;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.get('/', function (req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });
-});
 app.use('/api', auth_1.default, user_1.default, post_1.default);
 app.listen(port, function () {
     console.log("Server Running  " + port);

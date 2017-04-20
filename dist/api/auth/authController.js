@@ -6,9 +6,9 @@ function login(req, res, next) {
     var email = body.email, password = body.password;
     user_1.default.findOne({ email: body.email }, function (err, user) {
         if (err)
-            return res.status(404).json({ err: err });
+            return res.status(404).json({ message: 'Error' });
         if (!user)
-            return res.status(404).json({ msg: 'Email is invalid' });
+            return res.status(404).json({ message: 'Email is invalid' });
         if (user.comparePassword(password)) {
             res.status(200).json({
                 data: {
@@ -33,15 +33,24 @@ function register(req, res, next) {
     var body = req.body;
     var firstName = body.firstName, lastName = body.lastName, email = body.email, password = body.password;
     var user = new user_1.default(body);
-    user.save(function (err, updatedTank) {
-        if (err) {
-            return res.send(err);
-        }
-        else {
-            res.status(200).json({
-                data: { id: updatedTank, }, message: 'User Created!!!'
-            });
-        }
+    user_1.default.findOne({ email: body.email }, function (err, exist) {
+        if (err)
+            return res.status(400).json({ message: 'Error' });
+        if (exist)
+            return res.status(200).json({ message: 'Email is already exist' });
+        user.save(function (err) {
+            if (err) {
+                res.status(400).json({
+                    message: err
+                });
+            }
+            else {
+                res.status(200).json({
+                    id: user._id,
+                    message: 'User Created!!!'
+                });
+            }
+        });
     });
 }
 exports.register = register;
@@ -53,7 +62,9 @@ function social(req, res, next) {
             var user_2 = new user_1.default(body);
             user_2.save(function (err, user) {
                 if (err) {
-                    res.send(err);
+                    res.status(400).json({
+                        message: 'Error'
+                    });
                 }
                 else {
                     res.status(200).json({

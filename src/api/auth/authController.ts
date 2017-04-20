@@ -6,8 +6,8 @@ export function login(req, res, next) {
     let body = req.body;
     let { email, password } = body;
     User.findOne({ email: body.email }, (err, user) => {
-        if (err) return res.status(404).json({ err: err });
-        if (!user) return res.status(404).json({ msg: 'Email is invalid' });
+        if (err) return res.status(404).json({ message: 'Error' });
+        if (!user) return res.status(404).json({ message: 'Email is invalid' });
         if (user.comparePassword(password)) {
             res.status(200).json({
                 data: {
@@ -32,15 +32,22 @@ export function register(req, res, next) {
     let body = req.body;
     let { firstName, lastName, email, password } = body;
     let user = new User(body);
-    user.save((err, updatedTank) => {
-        if (err) {
-            return res.send(err);
-        } else {
-            res.status(200).json({
-                data: { id: updatedTank, }, message: 'User Created!!!'
-            });
-        }
-    });
+    User.findOne({ email: body.email }, (err, exist) => {
+        if (err) return res.status(400).json({ message: 'Error' });
+        if (exist) return res.status(200).json({ message: 'Email is already exist' });
+        user.save((err) => {
+            if (err) {
+                res.status(400).json({
+                    message: err
+                });
+            } else {
+                res.status(200).json({
+                    id: user._id,
+                    message: 'User Created!!!'
+                });
+            }
+        });
+    })
 }
 
 export function social(req, res, next) {
@@ -51,7 +58,9 @@ export function social(req, res, next) {
             let user = new User(body);
             user.save((err, user) => {
                 if (err) {
-                    res.send(err);
+                    res.status(400).json({
+                        message: 'Error'
+                    });
                 }
                 else {
                     res.status(200).json({

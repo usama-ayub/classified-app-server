@@ -1,9 +1,13 @@
 import * as express from 'express';
-import { addPost, deletePost, updatePost } from './postController'
+import { addPost, deletePost, updatePost, getAllPost, likePost, numberOfPost, getPostById } from './postController'
 const router = express.Router();
 
+router.get('/post', getAllPost);
+router.get('/post/:post_id', getPostById);
 router.post('/post/add', addPost);
-router.post('/post/delete', deletePost);
-router.post('/post/update', updatePost);
+router.delete('/post/:post_id/delete', deletePost);
+router.put('/post/update', updatePost);
+router.put('/post/like', likePost);
+router.post('/post/of/number', numberOfPost);
 
 export default router;

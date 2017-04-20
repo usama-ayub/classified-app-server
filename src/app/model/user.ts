@@ -33,7 +33,6 @@ export interface IUser extends mongoose.Document {
 
 UserSchema.pre('save', function (next) {
     let user = this;
-
     if (!user.isModified('password')) return next();
     let hash = bcrypt.hashSync(user.password, 5);
     user.password = hash;
