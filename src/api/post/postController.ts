@@ -3,41 +3,56 @@ import Post from '../../app/model/post'
 import config from '../../config/config';
 
 export function getAllPost(req, res, next) {
-    Post.find({}, (err, users) => {
+    Post.find({}, (err, posts) => {
         if (err) {
-            return res.status(400).json({ message: 'Post Not Found' })
+            return res.json({ success: false, data: null, error: 'Post Not Found' })
         }
-        res.status(200).json({ message: 'All Post Found', data: users })
+        else {
+            return res.json({ success: true, data: posts, error: null })
+        }
     })
 }
 
 export function getPostById(req, res, next) {
     let params = req.params;
     let { post_id } = params
-    Post.findById(params.post_id, (err, user) => {
+    Post.findById(params.post_id, (err, post) => {
         if (err) {
-            return res.status(400).json({ message: 'User Not Found' })
+            return res.json({ success: false, data: null, error: 'Post Not Found' })
         }
         else {
-            res.status(200).json({ message: 'User Found', data: user })
+            return res.json({ success: true, data: post, error: null })
         }
     })
 }
 
+export function getPostByUserId(req, res, next) {
+    Post.find({ createBy: req.query.id }, (err, post) => {
+        if (err) {
+            return res.json({ success: false, data: null, error: 'User Post Not Found' })
+        } else {
+            return res.json({ success: true, data: post, error: null })
+        }
+    })
+    /*Post.find({createBy:req.params.id}, (err, post) => {
+        console.log(post)
+        if (err) {
+            return res.json({ success: false, data: null, error: 'User Post Not Found' })
+        }
+        else {
+            return res.json({ success: true, data: post, error: null })
+        }
+    })*/
+}
 export function addPost(req, res, next) {
     let body = req.body;
     let { createBy, posts, isLike } = body;
     let post = new Post(body);
     post.save((err) => {
         if (err) {
-            return res.status(200).json({
-                message: 'Error'
-            });
+            return res.json({ success: false, data: null, error: 'Error' });
         } else {
-            res.status(200).json({
-                id: post._id,
-                message: 'Post Add!'
-            });
+            return res.json({ success: true, data: post._id, error: null });
         }
     });
 }
@@ -73,14 +88,14 @@ export function updatePost(req, res, next) {
 
 export function likePost(req, res, next) {
     let body = req.body;
-    let { post_id, postLike } = body;
+    let { post_id, isLike } = body;
 
-    Post.findByIdAndUpdate({ _id: body.post_id }, { postLike: body.postLike }, (err, result) => {
+    Post.findByIdAndUpdate({ _id: body.post_id }, { isLike: body.isLike }, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: 'Error' })
+            return res.json({ success: false, data: null, error: 'Error' });
         }
         else {
-            return res.status(200).json({ message: 'Post Like' })
+            return res.json({ success: true, data: 'Post Like', error: null });
         }
     })
 }

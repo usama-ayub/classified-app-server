@@ -6,23 +6,14 @@ export function login(req, res, next) {
     let body = req.body;
     let { email, password } = body;
     User.findOne({ email: body.email }, (err, user) => {
-        if (err) return res.status(404).json({ message: 'Error' });
-        if (!user) return res.status(404).json({ message: 'Email is invalid' });
+        if (err) return res.json({ success: false, data: null, error: err });
+        if (!user) return res.json({ success: false, data: null, error: 'Email is invalid' });
         if (user.comparePassword(password)) {
-            res.status(200).json({
-                data: {
-                    id: user._id,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    profile: user.profile,
-                    userName: user.userName
-                }, message: 'login successfully'
-            });
+            return res.json({ success: true, data: user, error: null });
         }
         else {
-            res.status(404).json({
-                message: 'Password is not Match'
+            res.json({
+                success: false, data: null, error: 'Password is not Match'
             });
         }
     });
@@ -33,17 +24,16 @@ export function register(req, res, next) {
     let { firstName, lastName, email, password } = body;
     let user = new User(body);
     User.findOne({ email: body.email }, (err, exist) => {
-        if (err) return res.status(400).json({ message: 'Error' });
-        if (exist) return res.status(200).json({ message: 'Email is already exist' });
+        if (err) return res.json({ success: false, data: null, error: 'Error' });
+        if (exist) return res.json({ success: false, data: null, error: 'Email is already exist' });
         user.save((err) => {
             if (err) {
-                res.status(400).json({
-                    message: err
+                res.json({
+                    success: false, data: null, error: err
                 });
             } else {
                 res.status(200).json({
-                    id: user._id,
-                    message: 'User Created!!!'
+                    success: true, data: user._id, error: null
                 });
             }
         });

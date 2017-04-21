@@ -5,6 +5,7 @@ var postController_1 = require("./postController");
 var router = express.Router();
 router.get('/post', postController_1.getAllPost);
 router.get('/post/:post_id', postController_1.getPostById);
+router.get('/post/:user_id', postController_1.getPostByUserId);
 router.post('/post/add', postController_1.addPost);
 router.delete('/post/:post_id/delete', postController_1.deletePost);
 router.put('/post/update', postController_1.updatePost);

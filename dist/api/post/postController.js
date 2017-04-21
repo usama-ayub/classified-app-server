@@ -2,42 +2,52 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var post_1 = require("../../app/model/post");
 function getAllPost(req, res, next) {
-    post_1.default.find({}, function (err, users) {
+    post_1.default.find({}, function (err, posts) {
         if (err) {
-            return res.status(400).json({ message: 'Post Not Found' });
+            return res.json({ success: false, data: null, error: 'Post Not Found' })
         }
-        res.status(200).json({ message: 'All Post Found', data: users });
+        return res.json({ success: true, data: posts, error: null })
     });
 }
 exports.getAllPost = getAllPost;
 function getPostById(req, res, next) {
     var params = req.params;
     var post_id = params.post_id;
-    post_1.default.findById(params.post_id, function (err, user) {
+    post_1.default.findById(params.post_id, function (err, post) {
         if (err) {
-            return res.status(400).json({ message: 'User Not Found' });
+            return res.json({ success: false, data: null, error: 'Post Not Found' });
         }
         else {
-            res.status(200).json({ message: 'User Found', data: user });
+            return res.json({ success: true, data: post, error: null });
         }
     });
 }
 exports.getPostById = getPostById;
+function getPostByUserId(req, res, next) {
+    var params = req.params;
+    console.log(req.params);
+    var user_id = params.user_id;
+    post_1.default.find({ createBy: params.user_id }, function (err, post) {
+        console.log(post);
+        if (err) {
+            return res.json({ success: false, data: null, error: 'User Post Not Found' });
+        }
+        else {
+            return res.json({ success: true, data: post, error: null });
+        }
+    });
+}
+exports.getPostByUserId = getPostByUserId;
 function addPost(req, res, next) {
     var body = req.body;
     var createBy = body.createBy, posts = body.posts, isLike = body.isLike;
     var post = new post_1.default(body);
     post.save(function (err) {
         if (err) {
-            return res.status(200).json({
-                message: 'Error'
-            });
+             return res.json({ success: false, data: null, error: 'Error' });
         }
         else {
-            res.status(200).json({
-                id: post._id,
-                message: 'Post Add!'
-            });
+            return res.json({ success: true, data: post._id, error: null });
         }
     });
 }
@@ -73,10 +83,10 @@ function likePost(req, res, next) {
     var post_id = body.post_id, postLike = body.postLike;
     post_1.default.findByIdAndUpdate({ _id: body.post_id }, { postLike: body.postLike }, function (err, result) {
         if (err) {
-            return res.status(400).json({ message: 'Error' });
+           return res.json({ success: false, data: null, error: 'Error' });
         }
         else {
-            return res.status(200).json({ message: 'Post Like' });
+            return res.json({ success: true, data: 'Post Like', error: null });
         }
     });
 }
