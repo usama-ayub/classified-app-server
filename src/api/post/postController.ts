@@ -16,6 +16,7 @@ export function getAllPost(req, res, next) {
 export function getPostById(req, res, next) {
     let params = req.params;
     let { post_id } = params
+    console.log("req", req.params)
     Post.findById(params.post_id, (err, post) => {
         if (err) {
             return res.json({ success: false, data: null, error: 'Post Not Found' })
@@ -27,22 +28,24 @@ export function getPostById(req, res, next) {
 }
 
 export function getPostByUserId(req, res, next) {
-    Post.find({ createBy: req.query.id }, (err, post) => {
-        if (err) {
-            return res.json({ success: false, data: null, error: 'User Post Not Found' })
-        } else {
-            return res.json({ success: true, data: post, error: null })
-        }
-    })
-    /*Post.find({createBy:req.params.id}, (err, post) => {
-        console.log(post)
+    let params = req.params;
+    let { user_id } = params
+    // Post.find({ createBy: req.query.id }, (err, post) => {
+    //     if (err) {
+    //         return res.json({ success: false, data: null, error: 'User Post Not Found' })
+    //     } else {
+    //         return res.json({ success: true, data: post, error: null })
+    //     }
+    // })
+    console.log("req", params)
+    Post.find({ createBy: params.user_id }, (err, post) => {
         if (err) {
             return res.json({ success: false, data: null, error: 'User Post Not Found' })
         }
         else {
-            return res.json({ success: true, data: post, error: null })
+            return res.json({ success: true, data: "sdasd", error: null })
         }
-    })*/
+    })
 }
 export function addPost(req, res, next) {
     let body = req.body;

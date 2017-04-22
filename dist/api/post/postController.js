@@ -25,15 +25,15 @@ function getPostById(req, res, next) {
 exports.getPostById = getPostById;
 function getPostByUserId(req, res, next) {
     var params = req.params;
-    console.log(req.params);
+    console.log("req",req.params);
     var user_id = params.user_id;
     post_1.default.find({ createBy: params.user_id }, function (err, post) {
-        console.log(post);
+        console.log("req",req.params);
         if (err) {
             return res.json({ success: false, data: null, error: 'User Post Not Found' });
         }
         else {
-            return res.json({ success: true, data: post, error: null });
+            return res.json({ success: true, data: 'post', error: null });
         }
     });
 }

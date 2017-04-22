@@ -33,7 +33,7 @@ export function register(req, res, next) {
                 });
             } else {
                 res.status(200).json({
-                    success: true, data: user._id, error: null
+                    success: true, data: user, error: null
                 });
             }
         });

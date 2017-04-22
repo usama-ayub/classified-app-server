@@ -1,4 +1,5 @@
 import * as mongoose from 'mongoose';
+import User from '../../app/model/user'
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
