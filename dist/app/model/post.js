@@ -3,8 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var PostSchema = new Schema({
-    posts: String,
-    createBy: { type: Schema.Types.ObjectId, ref: 'User' },
+    name: String,
+    description: String,
+    img: String,
+    category: String,
+    createBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     isLike: Boolean,
     createTime: {
         type: Date,
