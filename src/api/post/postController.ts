@@ -41,8 +41,11 @@ export function getPostByUserId(req, res, next) {
 }
 
 export function addPost(req, res, next) {
+    //console.log(req.file)
     let body = req.body;
-    let { createBy, name, description, isLike, category, img } = body;
+    let { createBy, name, description, isLike, category, img  } = body;
+    body.img = req.file.originalname 
+    //console.log(body)
     let post = new Post(body);
     post.save((err) => {
         if (err) {

@@ -9,6 +9,7 @@ import * as mime from 'mime-types';
 import * as cors from 'cors';
 import * as shortid from 'shortid';
 import * as nodemailer from 'nodemailer';
+import * as multer from 'multer';
 
 
 //config
