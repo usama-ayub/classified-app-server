@@ -2,12 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var post_1 = require("../../app/model/post");
 function getAllPost(req, res, next) {
-    post_1.default.find({}, function (err, posts) {
+    post_1.default.find({}, function (err, post) {
         if (err) {
             return res.json({ success: false, data: null, error: 'Post Not Found' });
         }
         else {
-            return res.json({ success: true, data: posts, error: null });
+            return res.json({ success: true, data: post, error: null });
         }
     });
 }
@@ -40,11 +40,10 @@ function getPostByUserId(req, res, next) {
 }
 exports.getPostByUserId = getPostByUserId;
 function addPost(req, res, next) {
-    //console.log(req.file)
+    console.log("req file", req.file);
     var body = req.body;
-    var createBy = body.createBy, name = body.name, description = body.description, isLike = body.isLike, category = body.category, img = body.img;
-    body.img = req.file.originalname;
-    //console.log(body)
+    var createBy = body.createBy, title = body.title, description = body.description, isLike = body.isLike, category = body.category, imgName = body.imgName;
+    body.imgName = req.file.destination + req.file.originalname;
     var post = new post_1.default(body);
     post.save(function (err) {
         if (err) {

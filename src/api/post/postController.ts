@@ -1,14 +1,16 @@
 import * as express from 'express';
+import * as path from 'path';
+import * as fs from 'fs';
 import Post from '../../app/model/post'
 import config from '../../config/config';
 
 export function getAllPost(req, res, next) {
-    Post.find({}, (err, posts) => {
+    Post.find({}, (err, post) => {
         if (err) {
             return res.json({ success: false, data: null, error: 'Post Not Found' })
         }
         else {
-            return res.json({ success: true, data: posts, error: null })
+            return res.json({ success: true, data: post, error: null })
         }
     })
 }
@@ -41,11 +43,10 @@ export function getPostByUserId(req, res, next) {
 }
 
 export function addPost(req, res, next) {
-    //console.log(req.file)
+    console.log("req file", req.file)
     let body = req.body;
-    let { createBy, name, description, isLike, category, img  } = body;
-    body.img = req.file.originalname 
-    //console.log(body)
+    let { createBy, title, description, isLike, category, imgName } = body;
+    body.imgName = req.file.destination + req.file.originalname;
     let post = new Post(body);
     post.save((err) => {
         if (err) {

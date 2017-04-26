@@ -2,7 +2,17 @@ import * as express from 'express';
 import * as multer from 'multer';
 import { addPost, deletePost, updatePost, getAllPost, likePost, numberOfPost, getPostById, getPostByUserId } from './postController'
 const router = express.Router();
-const upload = multer({ dest: 'upload/' })
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'upload/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+
+var upload = multer({ storage: storage })
+//const upload = multer({ dest: 'upload/' })
 
 router.get('/post', getAllPost);
 router.get('/post/:post_id', getPostById);

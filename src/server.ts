@@ -41,7 +41,7 @@ const port = config.port;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-
+app.use('/upload', express.static(path.join(__dirname,'../upload')));
 
 app.use('/api', authRoutes, userRoutes, postRoutes);
 

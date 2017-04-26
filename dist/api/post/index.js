@@ -4,7 +4,16 @@ var express = require("express");
 var multer = require("multer");
 var postController_1 = require("./postController");
 var router = express.Router();
-var upload = multer({ dest: 'upload/' });
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'upload/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+var upload = multer({ storage: storage });
+//const upload = multer({ dest: 'upload/' })
 router.get('/post', postController_1.getAllPost);
 router.get('/post/:post_id', postController_1.getPostById);
 router.get('/post/user/:user_id', postController_1.getPostByUserId);

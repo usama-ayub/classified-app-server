@@ -3,9 +3,9 @@ import User from '../../app/model/user'
 const Schema = mongoose.Schema;
 
 const PostSchema = new Schema({
-    name: String,
+    title: String,
     description: String,
-    img: String,
+    imgName: String,
     category: String,
     createBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     isLike: Boolean,

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
+var path = require("path");
 var cors = require("cors");
 //config
 var config_1 = require("./config/config");
@@ -27,6 +28,7 @@ var port = config_1.default.port;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
+app.use('/upload', express.static(path.join(__dirname, '../upload')));
 app.use('/api', auth_1.default, user_1.default, post_1.default);
 app.listen(port, function () {
     console.log("Server Running  " + port);
