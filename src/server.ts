@@ -42,6 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 app.use('/upload', express.static(path.join(__dirname,'../upload')));
+app.use('/profile', express.static(path.join(__dirname,'../profile')));
 
 app.use('/api', authRoutes, userRoutes, postRoutes);
 

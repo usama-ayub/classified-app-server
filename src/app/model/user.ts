@@ -9,7 +9,7 @@ const UserSchema = new Schema({
     email: String,
     userName: String,
     password: String,
-    profile: String,
+    profileName: String,
     role: { type: String, default: "user" },
     createTime: {
         type: Date,
@@ -19,12 +19,13 @@ const UserSchema = new Schema({
 });
 
 export interface IUser extends mongoose.Document {
+    _id: string,
     firstName: string,
     lastName: string,
     email: string,
     userName: string,
     password: string,
-    profile: string,
+    profileName: string,
     role: string,
     socialId: string,
     createTime: Date,
@@ -47,4 +48,4 @@ UserSchema.methods = {
     }
 }
 
-export default mongoose.model <IUser> ('User', UserSchema);
+export default mongoose.model<IUser>('User', UserSchema);

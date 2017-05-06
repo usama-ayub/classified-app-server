@@ -7,10 +7,10 @@ var config_1 = require("../../config/config");
 function getAllUser(req, res, next) {
     user_1.default.find({}, function (err, users) {
         if (err) {
-            return res.status(400).json({ message: 'Users Not Found' });
+            return res.json({ success: false, data: null, error: 'Users Not Found' });
         }
         else {
-            res.status(200).json({ message: 'Users Found', data: users });
+            return res.json({ success: true, data: users, error: null });
         }
     });
 }
@@ -20,27 +20,55 @@ function getUserById(req, res, next) {
     var user_id = params.user_id;
     user_1.default.findById(params.user_id, function (err, user) {
         if (err) {
-            return res.status(400).json({ message: 'User Not Found' });
+            return res.json({ success: false, data: null, error: 'User Not Found' });
         }
         else {
-            res.status(200).json({ message: 'User Found', data: user });
+            return res.json({ success: true, data: user, error: null });
         }
     });
 }
 exports.getUserById = getUserById;
-function changePassword(req, res, next) {
+function userUpdateProfile(req, res, next) {
     var body = req.body;
-    var user_id = body.user_id, oldPassword = body.oldPassword, changePassword = body.changePassword;
+    var user_id = body.user_id, userName = body.userName, profileName = body.profileName, firstName = body.firstName, lastName = body.lastName;
+    body.profileName = req.file.destination + req.file.originalname;
     var data = {
-        password: body.oldPassword,
-        changePassword: body.changePassword
+        userName: body.userName,
+        profileName: body.profileName,
+        firstName: body.firstName,
+        lastName: body.lastName
     };
-    user_1.default.findByIdAndUpdate({ _id: body.user_id }, data, function (err, result) {
+    user_1.default.findByIdAndUpdate(body.user_id, data, function (err, update) {
         if (err) {
-            return res.status(400).json({ message: 'Error' });
+            return res.json({ success: false, data: null, error: err });
         }
         else {
-            return res.status(200).json({ message: 'Change Password Successfully' });
+            return res.json({ success: true, data: update, error: null });
+        }
+    });
+}
+exports.userUpdateProfile = userUpdateProfile;
+function changePassword(req, res, next) {
+    var body = req.body;
+    var user_id = body.user_id, oldPassword = body.oldPassword, newPassword = body.newPassword;
+    user_1.default.findOne({ _id: body.user_id }, function (err, user) {
+        if (err)
+            return res.json({ success: false, data: null, error: err });
+        if (!user)
+            return res.json({ success: false, data: null, error: 'User is invalid' });
+        if (user.comparePassword(oldPassword)) {
+            user.password = newPassword;
+            user.save(function (err) {
+                if (err) {
+                    return res.json({ success: false, data: null, error: err });
+                }
+                else {
+                    return res.json({ success: true, data: "Password Successful Change", error: null });
+                }
+            });
+        }
+        else {
+            return res.json({ success: false, data: null, error: 'Old Password is not Match' });
         }
     });
 }
@@ -50,9 +78,9 @@ function resetPassword(req, res, next) {
     var email = body.email;
     user_1.default.findOne({ email: body.email }, function (err, user) {
         if (err)
-            return res.status(400).json({ message: 'Error' });
+            return res.json({ success: false, data: null, error: err });
         else if (!user) {
-            return res.status(200).json({ message: "user not found" });
+            return res.json({ success: false, data: null, error: "user not found" });
         }
         else {
             var password = shortid.generate();
@@ -72,10 +100,10 @@ function resetPassword(req, res, next) {
             };
             transporter.sendMail(mailOptions, function (error, info) {
                 if (error) {
-                    return res.status(400).json({ message: error });
+                    return res.json({ success: false, data: null, error: err });
                 }
                 else {
-                    return res.status(200).json({ message: info });
+                    return res.json({ success: true, data: info, error: null });
                 }
             });
         }

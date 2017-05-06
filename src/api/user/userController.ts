@@ -8,9 +8,9 @@ import config from '../../config/config';
 export function getAllUser(req, res, next) {
     User.find({}, (err, users) => {
         if (err) {
-            return res.status(400).json({ message: 'Users Not Found' })
+            return res.json({ success: false, data: null, error: 'Users Not Found' })
         } else {
-            res.status(200).json({ message: 'Users Found', data: users })
+            return res.json({ success: true, data: users, error: null })
         }
     })
 }
@@ -20,38 +20,62 @@ export function getUserById(req, res, next) {
     let { user_id } = params;
     User.findById(params.user_id, (err, user) => {
         if (err) {
-            return res.status(400).json({ message: 'User Not Found' })
+            return res.json({ success: false, data: null, error: 'User Not Found' })
         } else {
-            res.status(200).json({ message: 'User Found', data: user })
+            return res.json({ success: true, data: user, error: null })
+        }
+    })
+}
+
+export function userUpdateProfile(req, res, next) {
+    let body = req.body;
+    let { user_id, userName, profileName, firstName, lastName } = body;
+    body.profileName = req.file.destination + req.file.originalname;
+    let data = {
+        userName: body.userName,
+        profileName: body.profileName,
+        firstName: body.firstName,
+        lastName: body.lastName
+    }
+    User.findByIdAndUpdate(body.user_id, data, (err, update) => {
+        if (err) {
+            return res.json({ success: false, data: null, error: err })
+        } else {
+            return res.json({ success: true, data: update, error: null })
         }
     })
 }
 
 export function changePassword(req, res, next) {
     let body = req.body;
-    let { user_id, oldPassword, changePassword } = body;
-    let data = {
-        password: body.oldPassword,
-        changePassword: body.changePassword
-    }
-
-    User.findByIdAndUpdate({ _id: body.user_id }, data, (err, result) => {
-        if (err) {
-            return res.status(400).json({ message: 'Error' })
+    let { user_id, oldPassword, newPassword } = body;
+    User.findOne({ _id: body.user_id }, (err, user) => {
+        if (err) return res.json({ success: false, data: null, error: err });
+        if (!user) return res.json({ success: false, data: null, error: 'User is invalid' });
+        if (user.comparePassword(oldPassword)) {
+            user.password = newPassword
+            user.save((err) => {
+                if (err) {
+                    return res.json({ success: false, data: null, error: err });
+                } else {
+                    return res.json({ success: true, data: "Password Successful Change", error: null });
+                }
+            });
         }
         else {
-            return res.status(200).json({ message: 'Change Password Successfully' })
+            return res.json({ success: false, data: null, error: 'Old Password is not Match' });
         }
-    })
+    });
+
 }
 
 export function resetPassword(req, res, next) {
     let body = req.body;
     let { email } = body;
     User.findOne({ email: body.email }, (err, user) => {
-        if (err) return res.status(400).json({ message: 'Error' });
+        if (err) return res.json({ success: false, data: null, error: err })
         else if (!user) {
-            return res.status(200).json({ message: "user not found" })
+            return res.json({ success: false, data: null, error: "user not found" })
         }
         else {
             let password = shortid.generate()
@@ -71,9 +95,9 @@ export function resetPassword(req, res, next) {
             };
             transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
-                    return res.status(400).json({ message: error });
+                    return res.json({ success: false, data: null, error: err })
                 } else {
-                    return res.status(200).json({ message: info });
+                    return res.json({ success: true, data: info, error: null })
                 }
             });
         };

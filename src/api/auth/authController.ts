@@ -32,7 +32,7 @@ export function register(req, res, next) {
                     success: false, data: null, error: err
                 });
             } else {
-                res.status(200).json({
+                res.json({
                     success: true, data: user, error: null
                 });
             }
@@ -48,33 +48,15 @@ export function social(req, res, next) {
             let user = new User(body);
             user.save((err, user) => {
                 if (err) {
-                    res.status(400).json({
-                        message: 'Error'
-                    });
+                    return res.json({ success: false, data: null, error: err });
                 }
                 else {
-                    res.status(200).json({
-                        data: {
-                            firstName: user.firstName,
-                            lastName: user.lastName,
-                            email: user.email,
-                            profile: user.profile,
-                            userName: user.userName
-                        }, message: 'User created!'
-                    });
+                   return res.json({ success: true, data: user, error: null });
                 }
             });
         }
         else {
-            res.status(200).json({
-                data: {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    profile: user.profile,
-                    userName: user.userName
-                }, message: 'User Get Success'
-            });
+             return res.json({ success: true, data: user, error: null });
         }
 
     });

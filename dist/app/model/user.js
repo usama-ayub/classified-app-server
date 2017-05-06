@@ -9,7 +9,7 @@ var UserSchema = new Schema({
     email: String,
     userName: String,
     password: String,
-    profile: String,
+    profileName: String,
     role: { type: String, default: "user" },
     createTime: {
         type: Date,
