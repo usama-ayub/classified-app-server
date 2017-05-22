@@ -28,6 +28,7 @@ export function getUserById(req, res, next) {
 }
 
 export function userUpdateProfile(req, res, next) {
+    console.log(req.file)
     let body = req.body;
     let { user_id, userName, profileName, firstName, lastName } = body;
     body.profileName = req.file.destination + req.file.originalname;

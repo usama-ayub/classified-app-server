@@ -17,7 +17,7 @@ var upload = multer({ storage: storage })
 router.get('/post', getAllPost);
 router.get('/post/:post_id', getPostById);
 router.get('/post/user/:user_id', getPostByUserId);
-router.post('/post/add', upload.single('postImg'), addPost);
+router.post('/post/add', upload.single('img'), addPost);
 router.delete('/post/:post_id/delete', deletePost);
 router.put('/post/update', updatePost);
 router.put('/post/like', likePost);

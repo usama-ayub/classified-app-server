@@ -7,6 +7,12 @@ var path = require("path");
 var cors = require("cors");
 //config
 var config_1 = require("./config/config");
+var app = express();
+var port = config_1.default.port;
+/*app.use((req, res, next) => {
+    console.log('req', req.file);
+    next;
+})*/
 //server routes
 var user_1 = require("./api/user");
 var auth_1 = require("./api/auth");
@@ -23,8 +29,6 @@ mongoose.connection.on('disconnected', function () {
     console.log('Mongoose default connection disconnected');
 });
 // App
-var app = express();
-var port = config_1.default.port;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());

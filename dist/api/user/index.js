@@ -9,7 +9,6 @@ var storage = multer.diskStorage({
         cb(null, 'profile/');
     },
     filename: function (req, file, cb) {
-        console.log(file);
         cb(null, file.originalname);
     }
 });

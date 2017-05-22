@@ -14,7 +14,12 @@ import * as multer from 'multer';
 
 //config
 import config from './config/config';
-
+const app = express();
+const port = config.port;
+/*app.use((req, res, next) => {
+    console.log('req', req.file);
+    next;
+})*/
 //server routes
 import userRoutes from './api/user';
 import authRoutes from './api/auth';
@@ -36,13 +41,11 @@ mongoose.connection.on('disconnected', function () {
 
 
 // App
-const app = express();
-const port = config.port;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use('/upload', express.static(path.join(__dirname,'../upload')));
-app.use('/profile', express.static(path.join(__dirname,'../profile')));
+app.use('/upload', express.static(path.join(__dirname, '../upload')));
+app.use('/profile', express.static(path.join(__dirname, '../profile')));
 
 app.use('/api', authRoutes, userRoutes, postRoutes);
 

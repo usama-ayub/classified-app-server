@@ -40,6 +40,7 @@ function getPostByUserId(req, res, next) {
 }
 exports.getPostByUserId = getPostByUserId;
 function addPost(req, res, next) {
+    console.log(req.file);
     var body = req.body;
     var createBy = body.createBy, title = body.title, description = body.description, isLike = body.isLike, category = body.category, imgName = body.imgName;
     body.imgName = req.file.destination + req.file.originalname;
