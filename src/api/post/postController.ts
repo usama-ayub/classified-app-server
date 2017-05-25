@@ -41,6 +41,18 @@ export function getPostByUserId(req, res, next) {
         }
     })
 }
+export function getPostByCategory(req, res, next) {
+    let params = req.params;
+    let { category } = params
+    Post.find({ category: params.category }, (err, post) => {
+        if (err) {
+            return res.json({ success: false, data: null, error: 'This Category Not Found' })
+        }
+        else {
+            return res.json({ success: true, data: post, error: null })
+        }
+    })
+}
 
 export function addPost(req, res, next) {
     console.log(req.file)

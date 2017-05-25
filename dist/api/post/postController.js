@@ -39,6 +39,19 @@ function getPostByUserId(req, res, next) {
     });
 }
 exports.getPostByUserId = getPostByUserId;
+function getPostByCategory(req, res, next) {
+    var params = req.params;
+    var category = params.category;
+    post_1.default.find({ category: params.category }, function (err, post) {
+        if (err) {
+            return res.json({ success: false, data: null, error: 'This Category Not Found' });
+        }
+        else {
+            return res.json({ success: true, data: post, error: null });
+        }
+    });
+}
+exports.getPostByCategory = getPostByCategory;
 function addPost(req, res, next) {
     console.log(req.file);
     var body = req.body;
