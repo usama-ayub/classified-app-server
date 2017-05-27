@@ -17,6 +17,7 @@ router.get('/post', postController_1.getAllPost);
 router.get('/post/:post_id', postController_1.getPostById);
 router.get('/post/user/:user_id', postController_1.getPostByUserId);
 router.get('/post/category/:category', postController_1.getPostByCategory);
+router.get('/post/featureCategory/:feature', postController_1.getPostByFeature);
 router.post('/post/add', upload.single('img'), postController_1.addPost);
 router.delete('/post/:post_id/delete', postController_1.deletePost);
 router.put('/post/update', postController_1.updatePost);

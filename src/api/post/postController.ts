@@ -54,6 +54,19 @@ export function getPostByCategory(req, res, next) {
     })
 }
 
+export function getPostByFeature(req, res, next) {
+    let params = req.params;
+    let { feature } = params
+    Post.find({ feature: params.feature }, (err, post) => {
+        if (err) {
+            return res.json({ success: false, data: null, error: 'This Feature Not Found' })
+        }
+        else {
+            return res.json({ success: true, data: post, error: null })
+        }
+    })
+}
+
 export function addPost(req, res, next) {
     console.log(req.file)
     let body = req.body;

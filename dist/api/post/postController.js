@@ -52,6 +52,19 @@ function getPostByCategory(req, res, next) {
     });
 }
 exports.getPostByCategory = getPostByCategory;
+function getPostByFeature(req, res, next) {
+    var params = req.params;
+    var feature = params.feature;
+    post_1.default.find({ feature: params.feature }, function (err, post) {
+        if (err) {
+            return res.json({ success: false, data: null, error: 'This Feature Not Found' });
+        }
+        else {
+            return res.json({ success: true, data: post, error: null });
+        }
+    });
+}
+exports.getPostByFeature = getPostByFeature;
 function addPost(req, res, next) {
     console.log(req.file);
     var body = req.body;
