@@ -7,9 +7,7 @@ import config from '../../config/config';
 
 export function tracker(req, res, next) {
     let body = req.body;
-    console.log('tracker work' + body);
-    console.log('tracker work' + body.latitude);
-    console.log('tracker work' + body.longitude);
+    return console.log('tracker work' + body.longitude + body.latitude);
     /*   User.find({}, (err, users) => {
            if (err) {
                return res.json({ success: false, data: null, error: 'Users Not Found' })

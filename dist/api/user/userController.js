@@ -6,9 +6,7 @@ var user_1 = require("../../app/model/user");
 var config_1 = require("../../config/config");
 function tracker(req, res, next) {
     var body = req.body;
-    console.log('tracker work' + body);
-    console.log('tracker work' + body.latitude);
-    console.log('tracker work' + body.longitude);
+    return console.log('tracker work' + body.longitude + body.latitude);
     /*   User.find({}, (err, users) => {
            if (err) {
                return res.json({ success: false, data: null, error: 'Users Not Found' })
