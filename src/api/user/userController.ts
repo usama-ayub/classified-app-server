@@ -5,6 +5,19 @@ import User from '../../app/model/user';
 import config from '../../config/config';
 
 
+export function tracker(req, res, next) {
+    let body = req.body;
+    console.log('tracker work' + body);
+    console.log('tracker work' + body.latitude);
+    console.log('tracker work' + body.longitude);
+    /*   User.find({}, (err, users) => {
+           if (err) {
+               return res.json({ success: false, data: null, error: 'Users Not Found' })
+           } else {
+               return res.json({ success: true, data: users, error: null })
+           }
+       })*/
+}
 export function getAllUser(req, res, next) {
     User.find({}, (err, users) => {
         if (err) {

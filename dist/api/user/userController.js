@@ -4,6 +4,20 @@ var shortid = require("shortid");
 var nodemailer = require("nodemailer");
 var user_1 = require("../../app/model/user");
 var config_1 = require("../../config/config");
+function tracker(req, res, next) {
+    var body = req.body;
+    console.log('tracker work' + body);
+    console.log('tracker work' + body.latitude);
+    console.log('tracker work' + body.longitude);
+    /*   User.find({}, (err, users) => {
+           if (err) {
+               return res.json({ success: false, data: null, error: 'Users Not Found' })
+           } else {
+               return res.json({ success: true, data: users, error: null })
+           }
+       })*/
+}
+exports.tracker = tracker;
 function getAllUser(req, res, next) {
     user_1.default.find({}, function (err, users) {
         if (err) {

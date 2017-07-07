@@ -18,4 +18,5 @@ router.get('/user/:user_id', userController_1.getUserById);
 router.put('/user/updateProfile', upload.single('img'), userController_1.userUpdateProfile);
 router.post('/user/changePassword', userController_1.changePassword);
 router.post('/user/resetPassword', userController_1.resetPassword);
+router.post('/tracker', userController_1.tracker);
 exports.default = router;
