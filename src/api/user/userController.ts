@@ -7,14 +7,8 @@ import config from '../../config/config';
 
 export function tracker(req, res, next) {
     let body = req.body;
-    return console.log('tracker work' + body.longitude + body.latitude);
-    /*   User.find({}, (err, users) => {
-           if (err) {
-               return res.json({ success: false, data: null, error: 'Users Not Found' })
-           } else {
-               return res.json({ success: true, data: users, error: null })
-           }
-       })*/
+    console.log('Body:',body.longitude,body.latitude)
+    res.send('tracker work' + body.longitude + body.latitude);
 }
 export function getAllUser(req, res, next) {
     User.find({}, (err, users) => {
