@@ -70,8 +70,9 @@ export function getPostByFeature(req, res, next) {
 export function addPost(req, res, next) {
     console.log(req.file)
     let body = req.body;
-    let { createBy, title, description, isLike, category, imgName } = body;
-    body.imgName = req.file.destination + req.file.originalname;
+    let { createBy, description } = body;
+    /* let { createBy, title, description, isLike, category, imgName } = body;
+    body.imgName = req.file.destination + req.file.originalname; */
     let post = new Post(body);
     post.save((err) => {
         if (err) {
@@ -88,10 +89,10 @@ export function deletePost(req, res, next) {
 
     Post.findByIdAndRemove({ _id: params.post_id }, (err, result) => {
         if (err) {
-            return res.status(400).json({ message: 'Error' })
+            return res.json({ success: false, data: null, error: err })
         }
         else {
-            return res.status(200).json({ message: 'Remove Post Successfully' })
+            return res.json({ success: true, data: 'Remove Post Successfully', error: null })
         }
     })
 

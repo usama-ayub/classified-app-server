@@ -68,8 +68,9 @@ exports.getPostByFeature = getPostByFeature;
 function addPost(req, res, next) {
     console.log(req.file);
     var body = req.body;
-    var createBy = body.createBy, title = body.title, description = body.description, isLike = body.isLike, category = body.category, imgName = body.imgName;
-    body.imgName = req.file.destination + req.file.originalname;
+    var createBy = body.createBy, description = body.description;
+    /* let { createBy, title, description, isLike, category, imgName } = body;
+    body.imgName = req.file.destination + req.file.originalname; */
     var post = new post_1.default(body);
     post.save(function (err) {
         if (err) {
@@ -86,10 +87,10 @@ function deletePost(req, res, next) {
     var post_id = params.post_id;
     post_1.default.findByIdAndRemove({ _id: params.post_id }, function (err, result) {
         if (err) {
-            return res.status(400).json({ message: 'Error' });
+            return res.json({ success: false, data: null, error: err });
         }
         else {
-            return res.status(200).json({ message: 'Remove Post Successfully' });
+            return res.json({ success: true, data: 'Remove Post Successfully', error: null });
         }
     });
 }
